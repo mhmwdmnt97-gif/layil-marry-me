@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will You Marry Me?</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Trebuchet MS',sans-serif;
+}
+
+body{
+height:100vh;
+overflow:hidden;
+background:linear-gradient(-45deg,#ffd1e8,#ffc2dd,#ffb3d9,#ffd9ec);
+background-size:400% 400%;
+animation:bg 10s ease infinite;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+}
+
+@keyframes bg{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
+}
+
+.container{
+padding:20px;
+max-width:800px;
+position:relative;
+z-index:2;
+}
+
+h1{
+font-size:4rem;
+color:#ff2f7b;
+margin-bottom:10px;
+text-shadow:2px 2px white;
+}
+
+.subtitle{
+font-size:1.5rem;
+color:#d63384;
+margin-bottom:25px;
+}
+
+.countdown{
+font-size:1.2rem;
+color:#c2185b;
+margin-bottom:35px;
+font-weight:bold;
+}
+
+.buttons{
+position:relative;
+height:250px;
+}
+
+button{
+border:none;
+border-radius:999px;
+padding:18px 40px;
+font-size:1.5rem;
+font-weight:bold;
+cursor:pointer;
+transition:.25s;
+}
+
+#yesBtn{
+background:#ff4f94;
+color:white;
+box-shadow:0 5px 15px rgba(0,0,0,.15);
+}
+
+#yesBtn:hover{
+transform:scale(1.1);
+}
+
+#noBtn{
+background:white;
+color:#ff4f94;
+position:absolute;
+left:58%;
+top:0;
+box-shadow:0 5px 15px rgba(0,0,0,.15);
+}
+
+.result{
+display:none;
+animation:pop .6s;
+}
+
+.result h2{
+font-size:3rem;
+color:#ff2f7b;
+margin-bottom:20px;
+}
+
+.result img{
+width:350px;
+max-width:90%;
+border-radius:20px;
+}
+
+.result p{
+margin-top:20px;
+font-size:1.4rem;
+color:#d63384;
+font-weight:bold;
+}
+
+@keyframes pop{
+from{
+opacity:0;
+transform:scale(.5);
+}
+to{
+opacity:1;
+transform:scale(1);
+}
+}
+
+.heart{
+position:fixed;
+font-size:25px;
+animation:float 7s linear forwards;
+pointer-events:none;
+}
+
+@keyframes float{
+from{
+transform:translateY(100vh);
+opacity:1;
+}
+to{
+transform:translateY(-120px);
+opacity:0;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>WILL YOU MARRY ME? 💍</h1>
+
+<div class="subtitle">
+For <b>LAYIL</b> 💖
+</div>
+
+<div class="countdown" id="countdown"></div>
+
+<div class="buttons">
+<button id="yesBtn">YES 💕</button>
+<button id="noBtn">NO 😭</button>
+</div>
+
+<div class="result" id="result">
+<h2>LAYIL SAID YES!! 💍💖</h2>
+
+<img src="dance.gif" alt="Dancing GIF">
+
+<p>
+Wedding Date 💒<br>
+26 / 06 / 2026
+</p>
+</div>
+
+</div>
+
+<script>
+
+const messages = [
+"Are you sure? 🥺",
+"Really sure? 😭",
+"Think again 💔",
+"Don't break my heart 😢",
+"Last chance 💍",
+"NO isn't allowed 😤"
+];
+
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const result = document.getElementById("result");
+
+let count = 0;
+let scale = 1;
+
+noBtn.addEventListener("mouseover", moveButton);
+noBtn.addEventListener("click", moveButton);
+
+function moveButton(){
+
+noBtn.innerText = messages[count % messages.length];
+count++;
+
+const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+
+noBtn.style.left = Math.random() * maxX + "px";
+noBtn.style.top = Math.random() * maxY + "px";
+
+scale += 0.15;
+yesBtn.style.transform = `scale(${scale})`;
+}
+
+yesBtn.addEventListener("click",()=>{
+
+document.querySelector(".buttons").style.display="none";
+result.style.display="block";
+
+for(let i=0;i<150;i++){
+
+const confetti=document.createElement("div");
+
+confetti.innerHTML=
+["🎉","💖","💕","💍"][Math.floor(Math.random()*4)];
+
+confetti.style.position="fixed";
+confetti.style.left=Math.random()*100+"vw";
+confetti.style.top="-50px";
+confetti.style.fontSize=(20+Math.random()*20)+"px";
+
+document.body.appendChild(confetti);
+
+confetti.animate(
+[
+{transform:"translateY(0px) rotate(0deg)"},
+{transform:"translateY(110vh) rotate(720deg)"}
+],
+{
+duration:3000+Math.random()*3000
+}
+);
+
+setTimeout(()=>{
+confetti.remove();
+},6000);
+
+}
+
+});
+
+setInterval(()=>{
+
+const heart=document.createElement("div");
+
+heart.className="heart";
+heart.innerHTML="💖";
+
+heart.style.left=Math.random()*100+"vw";
+
+document.body.appendChild(heart);
+
+setTimeout(()=>{
+heart.remove();
+},7000);
+
+},300);
+
+const weddingDate = new Date("June 26, 2026 00:00:00");
+
+function updateCountdown(){
+
+const now = new Date();
+const diff = weddingDate - now;
+
+if(diff <= 0){
+
+document.getElementById("countdown").innerHTML =
+"It's Wedding Day! 💒";
+
+return;
+}
+
+const days = Math.floor(diff / (1000*60*60*24));
+
+document.getElementById("countdown").innerHTML =
+"💍 Wedding in " + days + " days";
+
+}
+
+updateCountdown();
+setInterval(updateCountdown,1000);
+
+</script>
+
+</body>
+</html>
